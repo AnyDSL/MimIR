@@ -115,31 +115,31 @@ $(function(){initNavTree('plugins.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md79">Create a New In-Tree Plugin </a>
+    <a href="#autotoc_md80">Create a New In-Tree Plugin </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md80">Create a Third-Party Plugin </a>
+    <a href="#autotoc_md81">Create a Third-Party Plugin </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md81">Third-Party Plugin Discovery </a>
+        <a href="#autotoc_md82">Third-Party Plugin Discovery </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md82">Extract an Existing In-Tree Plugin </a>
+    <a href="#autotoc_md83">Extract an Existing In-Tree Plugin </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md83">Standalone Third-Party Builds </a>
+    <a href="#autotoc_md84">Standalone Third-Party Builds </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md84">Normalizers </a>
+    <a href="#autotoc_md85">Normalizers </a>
   </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2plugins"></a></p>
 <p>Check out the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin for a minimal example. It uses our custom <a class="el" href="add_mim_plugin_cmake.html" title="add_mim_plugin"><span class="tt">add_mim_plugin</span></a> CMake command. A plugin generally consists of two halves with the same name: a <span class="tt">&lt;plugin&gt;.<a class="el" href="namespacemim.html">mim</a></span> file that declares the public annexes and a shared library that registers the runtime behavior.</p>
 <p>Plugin names may only contain letters, digits, and underscores, and are limited to 8 characters.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md79"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md80"></a>
 Create a New In-Tree Plugin</h1>
 <p>Create a new in-tree plugin <span class="tt">foobar</span> based on the <a class="el" href="demo.html" title="The demo Plugin">demo</a> plugin:</p>
 <div class="fragment"><div class="line">./scripts/new_plugin.sh foobar</div>
@@ -153,7 +153,7 @@ Create a New In-Tree Plugin</h1>
 <li><span class="tt">include/mim/plug/&lt;plugin&gt;/&lt;plugin&gt;.h</span></li>
 <li><span class="tt">lit/&lt;plugin&gt;/const.<a class="el" href="namespacemim.html">mim</a></span></li>
 </ul>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md80"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md81"></a>
 Create a Third-Party Plugin</h1>
 <p>To create a self-contained third-party plugin repository in <span class="tt">extra/</span>, use:</p>
 <div class="fragment"><div class="line">./scripts/new_plugin.sh foobar --extra</div>
@@ -167,11 +167,11 @@ Create a Third-Party Plugin</h1>
 <li><span class="tt">lit/const.mim</span></li>
 </ul>
 <p>In <span class="tt">--extra</span> mode, the script also initializes a new Git repository for the plugin.</p>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md81"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md82"></a>
 Third-Party Plugin Discovery</h2>
 <p>If you clone a plugin repository into <span class="tt">extra/</span>, MimIR picks it up automatically during configuration when the repository contains a <span class="tt">CMakeLists.txt</span> as a direct child of <span class="tt">extra/</span>.</p>
 <p>If the plugin repository also contains <span class="tt">lit/*.<a class="el" href="namespacemim.html">mim</a></span> tests, they are picked up automatically by the main <span class="tt">lit</span> target as well.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md82"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md83"></a>
 Extract an Existing In-Tree Plugin</h1>
 <p>To move an existing in-tree plugin into <span class="tt">extra/foobar</span>, use:</p>
 <div class="fragment"><div class="line">./scripts/extract_plugin.sh foobar</div>
@@ -182,7 +182,7 @@ Extract an Existing In-Tree Plugin</h1>
 <li><span class="tt">lit/&lt;plugin&gt;/</span> into <span class="tt">extra/&lt;plugin&gt;/lit/</span></li>
 </ul>
 <p>It also rewrites the extracted <span class="tt">CMakeLists.txt</span> for out-of-tree use and removes the plugin from the in-tree plugin list so it is picked up through <span class="tt">extra/</span> instead.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md83"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md84"></a>
 Standalone Third-Party Builds</h1>
 <p>After installing MimIR, a third-party plugin only needs to find the <span class="tt"><a class="el" href="namespacemim.html">mim</a></span> package. For example, a plugin called <span class="tt">foo</span> can be set up like this:</p>
 <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.25 FATAL_ERROR)</div>
@@ -200,7 +200,7 @@ Standalone Third-Party Builds</h1>
 </div><!-- fragment --><p>Configure the project standalone with:</p>
 <div class="fragment"><div class="line">cmake .. -Dmim_DIR=&lt;MIM_INSTALL_PREFIX&gt;/lib/cmake/mim</div>
 </div><!-- fragment --><p>The authoritative reference for <span class="tt">add_mim_plugin</span> itself lives in <a class="el" href="add_mim_plugin_cmake.html" title="add_mim_plugin"><span class="tt">cmake/Mim.cmake</span></a>.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md84"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md85"></a>
 Normalizers</h1>
 <p>Normalizers usually obtain the owning <a class="el" href="classmim_1_1World.html" title="mim::World">World</a> from one of their arguments, often <span class="tt">type-&gt;world()</span>, and then build the replacement directly in that world. Small normalizers are expected to be direct and side-effect free.</p>
 <p>That often leads to tiny functions of the form:</p>

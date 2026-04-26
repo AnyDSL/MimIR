@@ -115,60 +115,60 @@ $(function(){initNavTree('refly.html','',''); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md284">Dependencies </a>
+    <a href="#autotoc_md285">Dependencies </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md285">Types </a>
+    <a href="#autotoc_md286">Types </a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md286">Reify / Reflect </a>
+    <a href="#autotoc_md287">Reify / Reflect </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md287">%refly.reify </a>
+        <a href="#autotoc_md288">%refly.reify </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md288">%refly.reflect </a>
+        <a href="#autotoc_md289">%refly.reflect </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md289">Inspect </a>
+    <a href="#autotoc_md290">Inspect </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md290">%refly.type </a>
+        <a href="#autotoc_md291">%refly.type </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md291">%refly.gid </a>
+        <a href="#autotoc_md292">%refly.gid </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md292">%refly.dbg </a>
+        <a href="#autotoc_md293">%refly.dbg </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md293">Testing </a>
+    <a href="#autotoc_md294">Testing </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md294">%refly.equiv </a>
+        <a href="#autotoc_md295">%refly.equiv </a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md295">%refly.check </a>
-      </li>
-    </ul>
-  </li>
-  <li class="level1">
-    <a href="#autotoc_md296">Manipulate </a>
-    <ul>
-      <li class="level2">
-        <a href="#autotoc_md297">%refly.refine </a>
+        <a href="#autotoc_md296">%refly.check </a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md298">Stages </a>
+    <a href="#autotoc_md297">Manipulate </a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md299">Repls </a>
+        <a href="#autotoc_md298">%refly.refine </a>
+      </li>
+    </ul>
+  </li>
+  <li class="level1">
+    <a href="#autotoc_md299">Stages </a>
+    <ul>
+      <li class="level2">
+        <a href="#autotoc_md300">Repls </a>
       </li>
     </ul>
   </li>
@@ -177,33 +177,33 @@ $(function(){initNavTree('refly.html','',''); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2refly"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1refly.html" title="The refly Plugin">mim::plug::refly</a></dd></dl>
 <p>The refly plugin allows to <a href="https://en.wikipedia.org/wiki/Reification_(computer_science)">reify</a> and <a href="https://en.wikipedia.org/wiki/Reflective_programming">reflect</a> MimIR's own representation.</p>
-<h1 class="doxsection"><a class="anchor" id="autotoc_md284"></a>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md285"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">import compile;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md285"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md286"></a>
 Types</h1>
 <div class="fragment"><div class="line">axm %refly.Code: * → *;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md286"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md287"></a>
 Reify / Reflect</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md287"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md288"></a>
 %refly.reify</h2>
 <p>Yields the internal MimIR representation of a <a class="el" href="namespaceMim.html">Mim</a> expression as <span class="tt">%refly.Code</span>.</p>
 <div class="fragment"><div class="line">axm %refly.reify: {T: *} → T → [%refly.Code T], normalize_reify;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md288"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md289"></a>
 %refly.reflect</h2>
 <p>Converts a <span class="tt">%refly.Code</span> back to a <a class="el" href="namespaceMim.html">Mim</a> expression.</p>
 <div class="fragment"><div class="line">axm %refly.reflect: {T: *} → [%refly.Code T] → T, normalize_reflect;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md289"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md290"></a>
 Inspect</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md290"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md291"></a>
 %refly.type</h2>
 <p>Retuns type of an expression.</p>
 <div class="fragment"><div class="line">axm %refly.type: {T: *} → T → *, normalize_type;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md291"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md292"></a>
 %refly.gid</h2>
 <p>Retuns the internal <a class="el" href="classmim_1_1Def.html#ae3b896cb0e3c5a2351169ce5cb2183b4" title="Global id - unique number for this Def.">mim::Def::gid</a> of the argument.</p>
 <div class="fragment"><div class="line">axm %refly.gid: {T: *} → T → Nat, normalize_gid;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md292"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md293"></a>
 %refly.dbg</h2>
 <p>Debugs a given expression.</p><ul>
 <li><span class="tt">tmp</span>: Prints debug information of a given expression at construction time and vanishes afterwards.</li>
@@ -216,9 +216,9 @@ Inspect</h1>
 <div class="line">let %refly.debug   = 4;</div>
 <div class="line"> </div>
 <div class="line">axm %refly.dbg(tmp, perm): {T: *} → [Nat, T] → T, normalize_dbg;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md293"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md294"></a>
 Testing</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md294"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md295"></a>
 %refly.equiv</h2>
 <p>Checks for structurual / alpha-equivalence. We are using two disjoint relations:</p><ul>
 <li><span class="tt">A</span>lpha</li>
@@ -239,19 +239,19 @@ Testing</h1>
 <div class="fragment"><div class="line">axm %refly.equiv(ae = struc_ne, aE = struc_eq,</div>
 <div class="line">                 Ae = alpha_ne, AE = alpha_eq):</div>
 <div class="line">    {T: *} → [T, T] → T, normalize_equiv;</div>
-</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md295"></a>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md296"></a>
 %refly.check</h2>
 <p>Checks the given condition and emits the error message, if false.</p>
 <div class="fragment"><div class="line">axm %refly.check: {T: *} → {n: Nat} → [Bool, T, «n; I8»] → T, normalize_check;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md296"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md297"></a>
 Manipulate</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md297"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md298"></a>
 %refly.refine</h2>
 <p>Sets the <span class="tt">i</span>th operand of the reified Code <span class="tt">e</span> to <span class="tt">x</span>.</p>
 <div class="fragment"><div class="line">axm %refly.refine: {E X: *} → [e: %refly.Code E, i: Nat, x: %refly.Code X] → %refly.Code E, normalize_refine;</div>
-</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md298"></a>
+</div><!-- fragment --><h1 class="doxsection"><a class="anchor" id="autotoc_md299"></a>
 Stages</h1>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md299"></a>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md300"></a>
 Repls</h2>
 <div class="fragment"><div class="line">axm %refly.remove_dbg_repl: %compile.Repl;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
