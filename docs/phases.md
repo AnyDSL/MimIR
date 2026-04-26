@@ -83,6 +83,20 @@ Typical usage:
 - store that information in [`lattice()`](@ref mim::Analysis::lattice) and/or in side tables,
 - call [`invalidate()`](@ref mim::Phase::invalidate) if new information was discovered and another iteration is required.
 
+### Handling of Mutables
+
+Unlike [`RWPhase`](@ref mim::RWPhase), an [`Analysis`](@ref mim::Analysis) must traverse the entire reachable program without rebuilding it.
+For this reason, [`Analysis`](@ref mim::Analysis) overrides [`rewrite_mut()`](@ref mim::Analysis::rewrite_mut) to *preserve mutables and their binders* instead of rewriting them.
+
+When a mutable is visited, the analysis immediately maps it to itself (`mut -> mut`), and likewise maps its associated variable(s) to themselves (`var -> var`).
+This keeps the mutable structure intact as a stable "skeleton program" and prevents the analysis from accidentally introducing new mutables or fresh variables.
+
+After establishing these identity mappings, the analysis recursively traverses the mutable’s [dependencies](@ref mim::Def::deps) via [`rewrite()`](@ref mim::Rewriter::rewrite).
+This uses the [`Rewriter`](@ref mim::Rewriter) machinery purely as a structured, graph-aware traversal, while all computed information is stored separately in [`Analysis::lattice()`](@ref mim::Analysis::lattice).
+
+A common convention is to encode **top** as `def -> def` in the lattice:
+mapping a definition to itself means "no useful information, keep as-is", while mapping it to a different [`Def`](@ref mim::Def) represents a discovered abstract value.
+
 ### Reset Between Iterations
 
 If an analysis participates in a fixed-point loop, it should be ready to run multiple times.
