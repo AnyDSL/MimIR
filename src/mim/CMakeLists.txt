@@ -67,8 +67,17 @@ target_include_directories(libmim
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
         $<INSTALL_INTERFACE:include>
 )
+
+include(
+    ${PROJECT_SOURCE_DIR}/external/mimir-eqsat/dist/cmake/mimir-eqsat.cmake
+)
+configure_file(
+    "${PROJECT_SOURCE_DIR}/external/mimir-eqsat/dist/include/mimir_eqsat.h"
+    "${CMAKE_BINARY_DIR}/include/rust/mimir_eqsat.h"
+)
 target_link_libraries(libmim
     PUBLIC
+        mimir-eqsat
         absl::btree
         absl::fixed_array
         absl::inlined_vector
@@ -78,6 +87,7 @@ target_link_libraries(libmim
         rang
         ${CMAKE_DL_LIBS}
 )
+
 
 install(
     FILES "${CMAKE_BINARY_DIR}/include/mim/config.h"

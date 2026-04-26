@@ -18,6 +18,7 @@ import gpu;
 import matrix;
 import refly;
 import regex;
+import eqsat;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
@@ -53,7 +54,6 @@ lam extern _default_compile (): %compile.Phase =
                 %compile.repl2phase %autodiff.zero_repl,
             )
         ),
-        cond_phase "direct" direct_phases,
         cond_phase "matrix" (
             %compile.phases ff (
                 matrix_lower_phase,
@@ -62,6 +62,8 @@ lam extern _default_compile (): %compile.Phase =
         ),
         cond_phase "affine" %affine.lower_for_phase,
         %compile.internal_cleanup_phase,
+        cond_phase "eqsat" %eqsat.eqsat_phase,
+        cond_phase "direct" direct_phases,
         cond_phase "clos" clos_phases,
         %compile.pass2phase %compile.lam_spec_pass,
         // CodeGenPrep

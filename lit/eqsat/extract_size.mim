@@ -1,0 +1,19 @@
+// RUN: %mim %s -o -
+plugin core;
+plugin eqsat;
+
+// This is not a mathematically correct rewrite but it serves to demonstrate extraction by term-size.
+// With this rewrite:
+// - The term-size increases
+// - The term-depth decreases
+// Therefore we would expect to end up with the lhs when extracting by term-size.
+rule foo (a: Nat, b: Nat, c: Nat) : %core.nat.add (a, (%core.nat.add (b, %core.nat.add (c, 1)))) => %core.nat.add (%core.nat.add (a, b), %core.nat.add (c, %core.nat.add (a, 1)));
+
+fun extern _rules(): %eqsat.Rules =
+    return (%eqsat.rules (foo));
+
+fun extern _cost_fn(): %eqsat.CostFun =
+    return %eqsat.AstSize;
+
+con extern mul_lit_nat [a: Nat, b: Nat, c: Nat, return : Cn Nat] =
+    return (%core.nat.add (a, (%core.nat.add (b, %core.nat.add (c, 1)))));

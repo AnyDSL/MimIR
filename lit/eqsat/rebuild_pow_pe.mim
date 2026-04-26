@@ -1,0 +1,18 @@
+// RUN: %mim %s -o -
+plugin core;
+// plugin eqsat;
+
+lam pow(a b: Nat)@(%core.pe.is_closed b): Nat =
+    (%core.nat.mul (a, pow(a, %core.nat.sub (b, 1))), 1)#(%core.ncmp.e (b, 0));
+
+fun extern e(a: Nat): Nat = return (pow (a, 3));
+
+lam f(n: Nat, x: <<%core.nat.mul (n, %core.nat.mul (n, n)); Nat>>): [] = ();
+
+// TODO:
+// - We run into trouble because 'm' is referenced in the type of 'y'
+//   so init_lam fails to convert the type of 'y' since 'm' hasn't been registered
+//   as a variable yet at that point (only happens after the lam has been fully created)
+// - Whats worse is that the first Nat variable named 'm' gets emitted without
+//   its name which makes it even more impossible to be referenced
+fun extern g(m: Nat, y: <<pow (m, 3); Nat>>): [] = return (f (m, y));

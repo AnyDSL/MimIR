@@ -1,0 +1,28 @@
+// RUN: %mim %s -o -
+plugin core;
+plugin math;
+plugin mem;
+// plugin eqsat;
+
+// TODO: 'Num' is a Sigma type variable with projections 'T' and 'add'
+// but these are not emitted when the type of %bug.Arr (referencing 'Num')
+// gets emitted which makes it impossible to reconstruct the program
+// because the type of 'add' refers to 'T' but if 'T' isn't
+// emitted then the rewriter does not know what 'T' stands for.
+rec Num = [T: *, add: [T, T] → T];
+lam my_add {pe: «2; Nat»} (a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
+
+let F64 = (%math.F64, my_add @%math.f64);
+axm %bug.Arr: Num → *;
+
+fun test [N: Num] [A: %bug.Arr N]: Nat = return 0;
+
+fun extern stuff [mem: %mem.M 0, A: %bug.Arr F64]: %mem.M 0 =
+    ret _ = test F64 $ A;
+    return mem;
+
+lam pow (a b: Nat): Nat =
+    (%core.nat.mul (a, pow (a, %core.nat.sub (b, 1))), 1)#(%core.ncmp.e (b, 0));
+
+lam foo (a: «8; Nat»): Bool = tt;
+let _ = foo(‹pow (2, 3); 42›);

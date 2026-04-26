@@ -37,19 +37,21 @@ private:
 /// A rewrite rule
 class Rule : public Def, public Setters<Rule> {
 private:
-    Rule(const Reform* type, const Def* lhs, const Def* rhs, const Def* guard)
-        : Def(Node, type, {lhs, rhs, guard}, 0) {}
+    Rule(const Reform* type, const Def* meta_var, const Def* lhs, const Def* rhs, const Def* guard)
+        : Def(Node, type, {meta_var, lhs, rhs, guard}, 0) {}
     Rule(const Reform* type)
-        : Def(Node, type, 3, 0) {}
+        : Def(Node, type, 4, 0) {}
 
 public:
     /// @name lhs & rhs
     /// @see @ref proj
     ///@{
     const Reform* type() const { return Def::type()->as<Reform>(); }
-    const Def* lhs() const { return op(0); }
-    const Def* rhs() const { return op(1); }
-    const Def* guard() const { return op(2); }
+    const Def* meta_var() const { return op(0); }
+    const Def* lhs() const { return op(1); }
+    const Def* rhs() const { return op(2); }
+    const Def* guard() const { return op(3); }
+    MIM_PROJ(meta_var, const)
     MIM_PROJ(lhs, const)
     MIM_PROJ(rhs, const)
     MIM_PROJ(guard, const)
@@ -60,10 +62,13 @@ public:
     ///@{
     using Setters<Rule>::set;
     Rule* set(const Def* lhs, const Def* rhs) { return set_lhs(lhs)->set_rhs(rhs); }
-    Rule* set(const Def* lhs, const Def* rhs, const Def* guard) { return set_lhs(lhs)->set_rhs(rhs)->set_guard(guard); }
-    Rule* set_lhs(const Def* lhs) { return Def::set(0, lhs)->as<Rule>(); }
-    Rule* set_rhs(const Def* rhs) { return Def::set(1, rhs)->as<Rule>(); }
-    Rule* set_guard(const Def* guard) { return Def::set(2, guard)->as<Rule>(); }
+    Rule* set(const Def* meta_var, const Def* lhs, const Def* rhs, const Def* guard) {
+        return set_meta_var(meta_var)->set_lhs(lhs)->set_rhs(rhs)->set_guard(guard);
+    }
+    Rule* set_meta_var(const Def* meta_var) { return Def::set(0, meta_var)->as<Rule>(); }
+    Rule* set_lhs(const Def* lhs) { return Def::set(1, lhs)->as<Rule>(); }
+    Rule* set_rhs(const Def* rhs) { return Def::set(2, rhs)->as<Rule>(); }
+    Rule* set_guard(const Def* guard) { return Def::set(3, guard)->as<Rule>(); }
     Rule* unset() { return Def::unset()->as<Rule>(); }
     ///@}
 
@@ -90,7 +95,7 @@ public:
     static bool is_in_rule(const Def*);
 
     static constexpr auto Node      = mim::Node::Rule;
-    static constexpr size_t Num_Ops = 3;
+    static constexpr size_t Num_Ops = 4;
 
 private:
     const Def* rebuild_(World&, const Def*, Defs) const override;

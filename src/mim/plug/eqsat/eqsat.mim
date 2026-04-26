@@ -1,0 +1,89 @@
+/// # The eqsat Plugin {#eqsat}
+///
+/// @see mim::plug::eqsat
+///
+/// An equality saturation plugin.
+///
+/// [TOC]
+///
+/// This plugin is responsible for optimizing MimIR
+/// programs through the process of equality saturation.
+///
+/// It achieves this in three steps:
+///
+/// 1) Convert the program into a series of symbolic expressions, one for each top-level lambda
+/// 2) Passe these expressions to the 'egg' equality saturation engine for rewriting
+/// 3) Rewrite the program based on the results of step 2)
+///
+/// Rewrite rules, predefined sets of rewrite rules, and a cost function may be provided
+/// via configuration lambdas. See the examples in the lit test suite for specific implementations.
+///
+///
+/// ## Dependencies
+///
+import compile;
+plugin core;
+///
+///
+/// ## Types
+///
+/// ### %%eqsat.Rules
+///
+/// Represents a set of rules defined in MimIR.
+///
+axm %eqsat.Rules: *;
+///
+/// ### %%eqsat.Ruleset
+///
+/// Represents a set of rules to be used during equality saturation.
+///
+axm %eqsat.Ruleset: *;
+///
+/// ### %%eqsat.CostFun
+///
+/// Represents a cost function for extracting the most optimal term from an egraph.
+///
+axm %eqsat.CostFun: *;
+///
+///
+/// ## Rulesets
+///
+axm %eqsat.core: %eqsat.Ruleset;
+axm %eqsat.math: %eqsat.Ruleset;
+///
+///
+/// ## Cost functions
+///
+axm %eqsat.AstSize: %eqsat.CostFun;
+axm %eqsat.AstDepth: %eqsat.CostFun;
+///
+///
+/// ## Operations
+///
+/// ### %%eqsat.rulesets
+///
+/// Tells the equality saturation engine which of the predefined
+/// rulesets inside of eqsat/egg/src/rules/ it should use.
+///
+axm %eqsat.rulesets: {n: Nat} → «n; %eqsat.Ruleset» → %eqsat.Ruleset;
+///
+/// ### %%eqsat.rules
+///
+/// Tells the equality saturation engine to use a set of rules during equality saturation.
+//
+/// TODO: We should be able to apply this to any and all rewrite rules but that doesn't
+///       quite work yet depending on the types of the meta variables of the rewrite rule.
+///
+axm %eqsat.rules: {n: Nat, Ts: «n; *»} → «i: n; Ts#i» → %eqsat.Rules;
+///
+///
+/// TODO: We could add another config function here to configure whether to use regular egg
+///       or slotted-egg to perform equality saturation.
+///
+/// ## Passes and Phases
+///
+/// ### Phases
+///
+axm %eqsat.eqsat_phase: %compile.Phase;
+axm %eqsat.egg_rewrite: %compile.Phase;
+axm %eqsat.slotted_rewrite: %compile.Phase;
